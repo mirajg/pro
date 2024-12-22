@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Test Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff7675, #74b9ff);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      margin: 20px;
+      font-size: calc(1.5rem + 1vw); /* Responsive font size */
+    }
+
+    #game-container {
+      max-width: 600px;
+      margin: auto;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .text-display {
+      font-size: calc(1rem + 0.5vw);
+      background-color: rgba(0, 0, 0, 0.1);
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      margin: 20px auto;
+      user-select: none;
+      pointer-events: none;
+      line-height: 1.5;
+      max-height: 150px;
+      overflow: auto; /* Ensure text doesn't overflow */
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 10px;
+      font-size: calc(0.8rem + 0.5vw);
+      border: none;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    button {
+      background-color: #00b894;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: calc(0.8rem + 0.5vw);
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .stats {
+      margin: 10px 0;
+      font-size: calc(0.8rem + 0.5vw);
+    }
+
+    .error {
+      color: #ff4757;
+      font-weight: bold;
+    }
+
+    /* Portrait and Narrow Screens */
+    @media (orientation: portrait), (max-width: 600px) {
+      h1 {
+        font-size: calc(1.2rem + 1vw); /* Adjust title size */
+      }
+
+      .text-display {
+        font-size: calc(0.9rem + 0.5vw);
+        max-height: 120px; /* Reduce text area height */
+      }
+
+      input[type="text"], button {
+        font-size: 1rem;
+        width: 95%;
+      }
+
+      button {
+        padding: 8px;
+      }
+    }
+    #home-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: white;
+      color: #ff758c;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: calc(0.8rem + 0.5vw);
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    #home-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    }
+    body h1{
+        pointer-events: none;
+    }
+    a{
+        text-decoration: none;
+    }
+    body > h1{
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>.</h1>
+  <div id="game-container">
+    <div id="text-display" class="text-display"></div>
+    <input type="text" id="text-input" placeholder="Start typing..." />
+    <button onclick="startGame()">Start Game</button>
+    <p id="stats" class="stats"></p>
+  </div>
+  <a id="home-btn" href="gamesList.html">Back To Game Collection</a>
+  <script> 
+    const texts = [
+      "The quick brown fox jumps over the lazy dog.",
+      "Typing fast requires practice and patience.", 
+      "Code is like humor. When you have to explain it, it's bad.",
+      "Typing tests are a fun way to improve your speed and accuracy.",
+      "Frontend development focuses on responsiveness and user interface."
+    ];
+
+    let currentText = '';
+    let startTime = null;
+
+    function startGame() {
+      // Reset stats
+      document.getElementById('stats').innerText = '';
+      document.getElementById('text-input').value = '';
+      document.getElementById('text-input').style.color = 'black';
+
+      // Randomly select a text
+      currentText = texts[Math.floor(Math.random() * texts.length)];
+      document.getElementById('text-display').innerText = currentText;
+
+      // Start timer
+      startTime = new Date();
+    }
+
+    document.getElementById('text-input').addEventListener('input', (e) => {
+      const input = e.target.value;     
+      
+      const displayText = document.getElementById('text-display').innerText;
+ 
+      if (displayText.startsWith(input)) {
+        e.target.style.color = 'green';
+        if (input === displayText) {
+          // Calculate time
+          const timeTaken = (new Date() - startTime) / 1000;
+          const words = currentText.split(' ').length;
+          const wpm = Math.round((words / timeTaken) * 60);
+
+          document.getElementById('stats').innerHTML = `
+            <span style="color: #2ecc71;">Well done!</span> 
+            Time: ${timeTaken.toFixed(2)}s | Speed: ${wpm} WPM
+          `;
+        }
+      } else {
+        e.target.style.color = 'red';
+      }
+    });
+    startGame();
+  </script>
+</body>
+</html>

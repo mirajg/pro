@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #141e30, #243b55);
+            color: white;
+        }
+        #title{
+            font-size: 4vmax;
+        }
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .game-container {
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            background: #1e2d3a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .choices {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .choice {
+            width: 80px;
+            height: 80px;
+            border: 2px solid white;
+            border-radius: 50%;
+            background: #3c4a5a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .choice:hover {
+            transform: scale(1.1);
+        }
+
+        .choice img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+
+        .home-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .choice {
+                width: 60px;
+                height: 60px;
+            }
+
+            .choice img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .result {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title">Rock Paper Scissors</h1>
+    <div class="game-container">
+        <div class="choices">
+            <div class="choice" id="rock">
+                <img src="https://img.icons8.com/ios/50/ffffff/rock.png" alt="Rock">
+            </div>
+            <div class="choice" id="paper">
+                <img src="https://img.icons8.com/ios/50/ffffff/paper.png" alt="Paper">
+            </div>
+            <div class="choice" id="scissors">
+                <img src="https://img.icons8.com/ios/50/ffffff/scissors.png" alt="Scissors">
+            </div>
+        </div>
+        <div class="result" id="result">Make your choice!</div>
+        <div class="scoreboard">
+            <div>Player Score: <span id="player-score">0</span></div>
+            <div>Computer Score: <span id="computer-score">0</span></div>
+        </div>
+        <a class="home-btn"  href="gamesList.html">Back To Game Collection</a>
+    </div>
+    <script>
+        const choices = document.querySelectorAll('.choice');
+        const result = document.getElementById('result');
+        const playerScoreElement = document.getElementById('player-score');
+        const computerScoreElement = document.getElementById('computer-score');
+
+        let playerScore = 0;
+        let computerScore = 0;
+
+        const choicesArray = ['rock', 'paper', 'scissors'];
+
+        // Function to get computer choice
+        function getComputerChoice() {
+            const randomIndex = Math.floor(Math.random() * 3);
+            return choicesArray[randomIndex];
+        }
+
+        // Function to play a round
+        function playRound(playerChoice) {
+            const computerChoice = getComputerChoice();
+
+            if (playerChoice === computerChoice) {
+                result.textContent = `It's a tie! Both chose ${playerChoice}.`;
+            } else if (
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                playerScore++;
+                playerScoreElement.textContent = playerScore;
+                result.textContent = `You win! ${playerChoice} beats ${computerChoice}.`;
+            } else {
+                computerScore++;
+                computerScoreElement.textContent = computerScore;
+                result.textContent = `You lose! ${computerChoice} beats ${playerChoice}.`;
+            }
+        }
+
+        // Event listeners for user choice
+        choices.forEach(choice => {
+            choice.addEventListener('click', () => {
+                const playerChoice = choice.id;
+                playRound(playerChoice);
+            });
+        });
+    </script>
+</body>
+</html>

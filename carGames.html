@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2D Car Game</title>
+    
+  <style>
+    /* General Reset */
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #202020;
+      height: 100%;
+    }
+
+    .game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .road {
+      position: relative;
+      width: 90%; /* Relative width for responsiveness */
+      max-width: 400px; /* Cap the maximum width */
+      height: 100%;
+      background: linear-gradient(to bottom, #4a4a4a, #2e2e2e);
+      border: 5px solid #000;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* Aligns elements to the bottom */
+    }
+
+    #car {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10%; /* Relative width for responsiveness */
+      aspect-ratio: 1 / 2; /* Maintain car's shape */
+      background: red;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .obstacle {
+      position: absolute;
+      top: -100px; /* Off-screen start */
+      width: 10%; /* Match car's width */
+      aspect-ratio: 1 / 2; /* Maintain obstacle shape */
+      background: yellow;
+      border-radius: 5px;
+      left: 0;
+    }
+
+    .game-over {
+      position: absolute;
+      color: white;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px 40px;
+      font-size: 1.5rem;
+      border-radius: 10px;
+      z-index: 10;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 10%; /* Adjust for spacing */
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+      padding: 0 5%;
+    }
+
+    .btn {
+      background: #007bff;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+
+    .btn:active {
+      background: #004094;
+    }
+
+    .home-btn {
+      position: absolute;
+      top: 5%;
+      right: 5%;
+      padding: 8px 12px;
+      background: #ff5722;
+      color: white;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <div class="road">
+      <div id="car"></div>
+      <div class="obstacle"></div>
+    </div>
+    <button class="home-btn" onclick="goHome()">Back to Game Collection</button>
+    <div class="controls">
+      <button class="btn" onclick="moveCar('left')">Left</button>
+      <button class="btn" onclick="moveCar('right')">Right</button>
+    </div>
+    <div class="game-over">Game Over! Refresh to Restart</div>
+  </div>
+
+  <script>
+    const car = document.getElementById('car');
+    const obstacle = document.querySelector('.obstacle');
+    const gameOverMessage = document.querySelector('.game-over');
+    let gameOver = false;
+
+    let carPositionPercent = 50; // Middle of the road in percentage
+    const road = document.querySelector('.road');
+
+    document.addEventListener('keydown', (e) => {
+      if (gameOver) return;
+
+      if (e.key === 'ArrowLeft' && carPositionPercent > 10) {
+        carPositionPercent -= 5;
+        car.style.left = `${carPositionPercent}%`;
+      } else if (e.key === 'ArrowRight' && carPositionPercent < 90) {
+        carPositionPercent += 5;
+        car.style.left = `${carPositionPercent}%`;
+      }
+    });
+
+    function moveCar(direction) {
+      if (gameOver) return;
+
+      if (direction === 'left' && carPositionPercent > 10) {
+        carPositionPercent -= 5;
+        car.style.left = `${carPositionPercent}%`;
+      } else if (direction === 'right' && carPositionPercent < 90) {
+        carPositionPercent += 5;
+        car.style.left = `${carPositionPercent}%`;
+      }
+    }
+
+    function moveObstacle() {
+      if (gameOver) return;
+
+      const obstacleSpeed = 8; // Adjust speed for responsiveness
+      let obstacleTop = parseFloat(getComputedStyle(obstacle).top);
+
+      if (obstacleTop > window.innerHeight) {
+        resetObstacle();
+      } else {
+        obstacle.style.top = `${obstacleTop + obstacleSpeed}px`;
+      }
+
+      const carRect = car.getBoundingClientRect();
+      const obstacleRect = obstacle.getBoundingClientRect();
+
+      if (
+        carRect.left < obstacleRect.right &&
+        carRect.right > obstacleRect.left &&
+        carRect.top < obstacleRect.bottom &&
+        carRect.bottom > obstacleRect.top
+      ) {
+        gameOver = true;
+        gameOverMessage.style.display = 'flex';
+      }
+
+      if (!gameOver) {
+        requestAnimationFrame(moveObstacle);
+      }
+    }
+
+    function resetObstacle() {
+      const roadWidth = road.getBoundingClientRect().width;
+      const obstacleLeft = Math.random() * (roadWidth - car.offsetWidth);
+      obstacle.style.left = `${obstacleLeft}px`;
+      obstacle.style.top = '-100px';
+    }
+
+    resetObstacle();
+    moveObstacle();
+
+    function goHome() {
+      window.location.href = 'gamesList.html';
+    }
+  </script>
+</body>
+</html>

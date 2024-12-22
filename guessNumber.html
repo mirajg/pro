@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess the Number</title>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #8e44ad, #3498db);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      margin: 20px 0;
+      font-size: calc(1.5rem + 1vw); /* Responsive font size */
+    }
+
+    #game-container {
+      max-width: 500px;
+      margin: auto;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .instructions {
+      font-size: calc(0.8rem + 0.5vw);
+      margin: 10px 0;
+    }
+
+    input[type="number"] {
+      width: calc(50px + 10vw);
+      padding: 10px;
+      font-size: calc(0.8rem + 0.5vw);
+      border: none;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
+
+    button {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: calc(0.8rem + 0.5vw);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .message {
+      margin: 15px 0;
+      font-size: calc(0.8rem + 0.5vw);
+    }
+
+    .small {
+      font-size: calc(0.7rem + 0.5vw);
+    }
+    .home-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            font-size: 1rem;
+            margin: 1vmax 0;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background-color: #0056b3;
+            scale: 1.03;
+        }
+
+
+    /* Portrait and Narrow Screens */
+    @media (orientation: portrait), (max-width: 600px) {
+      #game-container {
+        padding: 15px;
+      }
+
+      input[type="number"] {
+        width: 80%; /* Make input smaller on narrow screens */
+      }
+
+      button {
+        width: 80%;
+        font-size: 1rem; /* Adjust button font size */
+      }
+
+      .instructions, .message {
+        font-size: calc(0.9rem + 0.3vw); /* Adjust text sizes */
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Guess the Number</h1>
+  <div id="game-container">
+    <p class="instructions">I'm thinking of a number between 1 and 100. Can you guess it?</p>
+    <input type="number" id="guess-input" placeholder="Enter your guess" />
+    <button onclick="checkGuess()">Submit Guess</button>
+    <p class="message" id="message"></p>
+    <button onclick="restartGame()">Restart Game</button>
+  </div>
+  <a class="home-btn"  href="gamesList.html">Back To Game Collection</a>
+  <script>
+    let secretNumber = Math.floor(Math.random() * 100) + 1; // Random number between 1-100
+    let attempts = 0;
+
+    function checkGuess() {
+      const input = document.getElementById('guess-input');
+      const message = document.getElementById('message');
+      const guess = Number(input.value);
+
+      // Ensure valid number input
+      if (!guess || guess < 1 || guess > 100) {
+        message.innerText = 'Please enter a number between 1 and 100.';
+        return;
+      }
+
+      attempts++;
+      if (guess === secretNumber) {
+        message.innerHTML = `<span style="color: #2ecc71;">Congratulations! You guessed the number in ${attempts} attempts!</span>`;
+      } else if (guess < secretNumber) {
+        message.innerHTML = `<span style="color: #f1c40f;">Too low! Try again.</span>`;
+      } else {
+        message.innerHTML = `<span style="color: #e74c3c;">Too high! Try again.</span>`;
+      }
+
+      input.value = ''; // Clear the input
+    }
+
+    function restartGame() {
+      secretNumber = Math.floor(Math.random() * 100) + 1; // New random number
+      attempts = 0;
+      document.getElementById('guess-input').value = '';
+      document.getElementById('message').innerText = '';
+    }
+  </script>
+</body>
+</html>

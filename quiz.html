@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Game</title>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #6a89cc, #82ccdd);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      margin: 20px;
+      font-size: calc(1.5rem + 1vw);
+    }
+
+    #quiz-container {
+      max-width: 600px;
+      margin: auto;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .question {
+      font-size: calc(1rem + 0.5vw);
+      margin: 20px 0;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button {
+      background-color: #38ada9;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: calc(0.8rem + 0.5vw);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #controls {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .score {
+      font-size: calc(1.2rem + 0.5vw);
+      color: #e58e26;
+      margin-top: 20px;
+    }
+
+    /* Portrait and Narrow Screens */
+    @media (orientation: portrait), (max-width: 600px) {
+      #quiz-container {
+        padding: 15px;
+      }
+
+      button {
+        width: 90%;
+      }
+
+      .question {
+        font-size: calc(1rem + 0.3vw);
+      }
+
+      #controls {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+    }
+    #home-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: white;
+      color: #ff758c;
+      border: none;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: calc(0.8rem + 0.5vw);
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    #home-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <h1 style="user-select: none;">.</h1>
+  <div id="quiz-container">
+    <div id="question" class="question"></div>
+    <div id="options" class="options"></div>
+    <p id="score" class="score"></p>
+    <div id="controls">
+      <button id="restart-btn" onclick="restartGame()">Restart Game</button>
+      <a id="home-btn" href="gamesList.html">Back To Game Collection</a>
+    </div>
+  </div>
+
+  <script>
+    // Quiz questions array
+    const questions = [
+      {
+        question: "What is the capital of France?",
+        options: ["Paris", "Rome", "Berlin", "Madrid"],
+        answer: "Paris"
+      },
+      {
+        question: "What is 5 + 3?",
+        options: ["5", "8", "9", "10"],
+        answer: "8"
+      },
+      {
+        question: "What is the largest planet in our solar system?",
+        options: ["Earth", "Mars", "Jupiter", "Venus"],
+        answer: "Jupiter"
+      },
+      {
+        question: "Which language is used for web development?",
+        options: ["Python", "HTML", "C++", "Java"],
+        answer: "HTML"
+      },
+      {
+        question: "What is the boiling point of water?",
+        options: ["100°C", "50°C", "75°C", "120°C"],
+        answer: "100°C"
+      }
+    ];
+
+    let currentQuestionIndex;
+    let score = 0;
+    let questionCount = 0;
+
+    function loadQuestion() {
+      // Clear previous options and score
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("score").innerText = "";
+
+      // Pick a random question if it's the first question
+      if (questionCount === 0) {
+        currentQuestionIndex = Math.floor(Math.random() * questions.length);
+      }
+
+      const questionData = questions[currentQuestionIndex];
+
+      // Render question
+      document.getElementById("question").innerText = questionData.question;
+
+      // Render options
+      questionData.options.forEach(option => {
+        const button = document.createElement("button");
+        button.innerText = option;
+        button.onclick = () => checkAnswer(option);
+        document.getElementById("options").appendChild(button);
+      });
+    }
+
+    function checkAnswer(selectedOption) {
+      const questionData = questions[currentQuestionIndex];
+
+      // Check answer and update score
+      if (selectedOption === questionData.answer) {
+        score++;
+      }
+
+      // Load next question or show score
+      questionCount++;
+      if (questionCount < questions.length) {
+        currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+        loadQuestion();
+      } else {
+        showScore();
+      }
+    }
+
+    function showScore() {
+      document.getElementById("question").innerText = "Quiz Completed!";
+      document.getElementById("options").innerHTML = ""; // Clear options
+      document.getElementById("score").innerText = `Your Score: ${score}/${questions.length}`;
+    }
+
+    function restartGame() {
+      score = 0;
+      questionCount = 0;
+      loadQuestion();
+    }
+
+    // Initialize game
+    loadQuestion();
+  </script>
+</body>
+</html>

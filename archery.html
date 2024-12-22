@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archery Game</title>
+  <style>
+    /* General reset */
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .game-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(to bottom, #6bd1ff, #ffffff);
+      overflow: hidden;
+    }
+
+    /* Target */
+    .target {
+      position: absolute;
+      width: 10vw; /* Adjust width based on viewport width */
+      height: 10vw; /* Maintain aspect ratio */
+      background: radial-gradient(circle, red, yellow);
+      border-radius: 50%;
+      top: 20%;
+      left: 80%;
+      transform: translate(-50%, -50%);
+      animation: moveTarget 3s infinite alternate ease-in-out;
+    }
+
+    /* Bow */
+    .bow {
+      position: absolute;
+      left: 5%;
+      bottom: 25%;
+      width: 4vw; /* Relative width based on viewport */
+      height: 15vw; /* Relative height based on viewport */
+      background: brown;
+      transform: translateY(50%);
+      border-radius: 5px;
+    }
+
+    .scoreboard {
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    /* Back to Home button */
+    .back-home {
+      position: absolute;
+      bottom: 10%;
+      left: 50%;
+      /* transform: translateX(-50%); */
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      background: #ff5722;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .back-home:hover {
+      background: #e64a19;
+      transform: scale(1.1); 
+    }
+
+    @keyframes moveTarget {
+      from {
+        top: 10%;
+      }
+      to {
+        top: 70%;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .scoreboard {
+        font-size: 1rem;
+      }
+
+      .back-home {
+        font-size: 1rem;
+        padding: 8px 16px;
+      }
+
+      .target {
+        width: 15vw; /* Larger target for mobile */
+        height: 15vw;
+      }
+
+      .bow {
+        width: 6vw;
+        height: 18vw;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <div class="target"></div>
+    <div class="bow"></div>
+    <div class="scoreboard">
+      <h2>Score: <span id="score">0</span></h2>
+    </div>
+    <button class="back-home" onclick="goHome()">Back To Game Collection</button>
+  </div>
+
+  <script>
+    // Game Elements
+    const target = document.querySelector('.target');
+    const scoreDisplay = document.getElementById('score');
+    let score = 0;
+
+    // Shoot an arrow
+    document.addEventListener('click', (e) => {
+      // Get the click position
+      const arrowX = e.clientX;
+      const arrowY = e.clientY;
+
+      // Target position
+      const targetRect = target.getBoundingClientRect();
+      const targetX = targetRect.left + targetRect.width / 2;
+      const targetY = targetRect.top + targetRect.height / 2;
+
+      // Calculate distance between the arrow and the target center
+      const distance = Math.sqrt(
+        Math.pow(arrowX - targetX, 2) + Math.pow(arrowY - targetY, 2)
+      );
+
+      // Check if the arrow hits the target (within 30px radius)
+      if (distance <= 30) {
+        score += 10;
+        scoreDisplay.textContent = score;
+
+        // Brief flash effect on hit
+        target.style.background = 'limegreen';
+        setTimeout(() => {
+          target.style.background = 'radial-gradient(circle, red, yellow)';
+        }, 200);
+      }
+    });
+
+    // Back to Home functionality
+    function goHome() {
+      window.location.href = 'gamesList.html';
+    }
+
+  </script>
+</body>
+</html>

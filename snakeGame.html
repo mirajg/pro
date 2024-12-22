@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Snake Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            position: relative;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        #gameContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        canvas {
+            border: 5px solid #ffffff;
+            background: #000;
+            display: block;
+        }
+
+        #score {
+            margin: 10px;
+            font-size: 1.5em;
+        }
+
+        /* Responsiveness */
+        #gameContainer {
+            width: 90%;
+            max-width: 500px;
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Mobile Button Layout */
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            gap: 1vmax;
+            margin-top: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .controlButton {
+            padding: 10px;
+            font-size: 2vmax; 
+            font-weight: bold;
+            border: none;
+            border-radius: 1vmin;
+            user-select: none;
+            background-color: #FF5722; /* Bright and inviting orange */
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 30%;
+        }
+
+        .controlButton:active {
+            scale: 1.2;
+        }
+
+        .hideAll {
+            width: 100vw;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #FF7EB3, #FF758C, #FF6A88);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1vmax;
+            font-weight: 900;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 3vmax;
+            height: 100vh;
+        }
+
+        .hideAll button {
+            padding: 1vmin;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 1vmin;
+            background-color: #FF5722;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hideAll button:active {
+            scale: 1.2;
+        }
+
+        .hideAll span {
+            color: #000;
+        }
+
+        /* Go to Home Button */
+        #homeButton {
+            margin-top: 10px;
+            padding: 1rem;
+            background-color: #4CAF50; /* Green for "Home" */
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 1vmin;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        #homeButton:active {
+            scale: 1.1;
+        }
+    </style>
+</head>
+<body>
+    <div class="hideAll">
+        <span>Score = </span>
+        <button onclick="resetGame()">Play Again</button>
+        <button id="homeButton">Go to Home</button>
+    </div>
+    <div id="gameContainer">
+        <div id="score">Score: 0</div>
+        <canvas id="gameCanvas"></canvas>
+        <!-- Control Buttons -->
+        <div id="controls">
+            <button class="controlButton" id="leftBtn">Left</button>
+            <button class="controlButton" id="upBtn">Up</button>
+            <button class="controlButton" id="rightBtn">Right</button>
+            <button class="controlButton" id="downBtn">Down</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set canvas dimensions
+        const gridSize = 20;
+        const canvasSize = 400;
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
+
+        // Game variables
+        let snake = [{ x: 5, y: 5 }];
+        let food = { x: 10, y: 10 };
+        let direction = "RIGHT";
+        let score = 0;
+        const speed = 200;
+
+        // Draw a rectangle
+        function drawRect(x, y, color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
+        }
+
+        // Place food at a random position
+        function placeFood() {
+            food = {
+                x: Math.floor(Math.random() * (canvasSize / gridSize)),
+                y: Math.floor(Math.random() * (canvasSize / gridSize)),
+            };
+        }
+
+        // Update the snake's position
+        function updateSnake() {
+            const head = { ...snake[0] };
+
+            switch (direction) {
+                case "UP":
+                    head.y--;
+                    break;
+                case "DOWN":
+                    head.y++;
+                    break;
+                case "LEFT":
+                    head.x--;
+                    break;
+                case "RIGHT":
+                    head.x++;
+                    break;
+            }
+
+            // Check collision with walls or self
+            if (
+                head.x < 0 ||
+                head.y < 0 ||
+                head.x >= canvasSize / gridSize ||
+                head.y >= canvasSize / gridSize ||
+                snake.some((segment) => segment.x === head.x && segment.y === head.y)
+            ) {
+                document.querySelector('.hideAll').style.display = 'flex';
+                document.querySelector('.hideAll span').innerHTML = `Score = ${score}`;
+                return;
+            }
+
+            // Check collision with food
+            if (head.x === food.x && head.y === food.y) {
+                score++;
+                document.getElementById("score").innerText = "Score: " + score;
+                placeFood();
+            } else {
+                snake.pop(); // Remove the tail if no food eaten
+            }
+
+            snake.unshift(head); // Add the new head
+        }
+
+        // Draw the game (snake and food)
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw food
+            drawRect(food.x, food.y, "red");
+
+            // Draw snake
+            snake.forEach((segment, index) => {
+                drawRect(segment.x, segment.y, index === 0 ? "lime" : "green");
+            });
+        }
+
+        // Reset game
+        function resetGame() {
+            snake = [{ x: 5, y: 5 }];
+            direction = "RIGHT";
+            score = 0;
+            document.getElementById("score").innerText = "Score: 0";
+            placeFood();
+            document.querySelector('.hideAll').style.display = 'none';  // Hide "Game Over" screen
+        }
+
+        // Main game loop
+        function gameLoop() {
+            updateSnake();
+            drawGame();
+            setTimeout(gameLoop, speed);
+        }
+
+        // Handle keyboard input
+        document.addEventListener("keydown", (e) => {
+            switch (e.key) {
+                case "ArrowUp":
+                    if (direction !== "DOWN") direction = "UP";
+                    break;
+                case "ArrowDown":
+                    if (direction !== "UP") direction = "DOWN";
+                    break;
+                case "ArrowLeft":
+                    if (direction !== "RIGHT") direction = "LEFT";
+                    break;
+                case "ArrowRight":
+                    if (direction !== "LEFT") direction = "RIGHT";
+                    break;
+            }
+        });
+
+        // Control buttons functionality
+        document.getElementById("leftBtn").addEventListener("click", () => {
+            if (direction !== "RIGHT") direction = "LEFT";
+        });
+        document.getElementById("upBtn").addEventListener("click", () => {
+            if (direction !== "DOWN") direction = "UP";
+        });
+        document.getElementById("rightBtn").addEventListener("click", () => {
+            if (direction !== "LEFT") direction = "RIGHT";
+        });
+        document.getElementById("downBtn").addEventListener("click", () => {
+            if (direction !== "UP") direction = "DOWN";
+        });
+
+        // Home Button functionality
+        document.getElementById("homeButton").addEventListener("click", () => {
+            window.location.href = "gamesList.html"; // You can replace '/home' with your desired home page URL 
+        });
+
+        placeFood();
+        gameLoop();
+    </script>
+</body>
+</html>

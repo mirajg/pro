@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miraj Gautam</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="icon" type="image/jpg" href="logo.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+         *{
+    margin:0;
+    padding: 0;
+    /* font-family:  'Arial Narrow Bold'; */
+    font-family: 'Inter', sans-serif;
+    color:white;
+}
+#logo{
+    pointer-events: none;
+}
+.header ul li:first-child{
+    pointer-events: none;
+}
+html{
+    scroll-behavior: smooth;
+}
+header{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    animation: slideIn 0.8s ease-in-out;
+    min-height:7.5vh;
+    z-index: 999;
+    background-color: #fff;
+}
+.takePlace{
+    width: 100%;
+    min-height: 7.5vh;
+}
+.header{
+    width: 100%;
+    min-height: 7.5vh;
+}
+.header ul{
+    width: 100%;
+    min-height: 7.5vh;
+    display: flex;
+    background-color: #fff;
+    justify-content: space-around;
+    align-items: center;
+}
+.header ul li{
+    font-size: 2.4vw;
+    font-weight: 900;
+}
+body{
+    width:100%;
+    min-height: 100vh;
+    position: relative;
+    background-color: black;
+}
+ul li{
+    list-style: none;
+}
+.header ul li a{
+    color:#000;
+    text-decoration: none;
+}
+#logo{
+    width:7.5vw;
+}
+main{
+    width: 100%;
+    min-height: 100vh;
+    background-color: black;
+}
+.main{
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+.move {
+    width:100%;
+    height:100%;
+    display: flex;
+    top:0;
+    left: 0;
+    justify-content: end;
+    align-items: center;
+    position: absolute;
+}
+
+.part1 {
+    width: 15vw;
+    position: absolute;
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+
+
+    right:10vw;
+    opacity: 0.5;
+    border-radius: 100px;
+    height: 15vw;
+    filter: blur(30px);
+    animation: ani 4s linear infinite alternate;
+}
+@keyframes ani {
+    from{
+        transform: scale(1.01) translate(10px, 15px);
+    }
+    to{
+        transform: scale(1.025) translate(-10px, -15px)  skew(10deg,10deg);;
+    }
+    
+}
+.part2 {
+    border-radius: 100px;
+    width: 15vw;
+    /* background: linear-gradient(to right,orangered,yellow); */
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+
+
+    right:10vw;
+    position: absolute;
+    filter: blur(30px);
+    animation: ani1 4s linear infinite alternate;
+    opacity: 0.5;
+    height: 15vw;
+}
+@keyframes ani1 {
+    from{
+        transform: scale(1.01) translate(-10px, -15px);
+    }
+    to{
+        transform: scale(1.025) translate(10px, 15px) skew(10deg,10deg);;
+    }
+}
+
+.part3 {
+    position: absolute;
+    border-radius: 100px;
+    width: 15vw;
+    filter: blur(30px);
+    z-index: 9;
+    right:10vw;
+    opacity: 0.5;
+    animation: ani2 4s linear infinite alternate;
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+
+
+    height: 15vw;
+}
+@keyframes ani2 {
+    from{
+        transform: scale(1.01) translate(-15px, 15px);
+    }
+    to{
+        transform: scale(1.025) translate(15px, -15px) skew(10deg,10deg);;
+    }
+}
+
+.aboutPar{
+    width:100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+.about p::before{
+    width:70vw;
+    content: "It's MIRAJ GAUTAM";
+    height: 100%;
+    font-size: 4.5vw;
+    font-weight: 900;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    position: absolute;
+    top:-100%;
+}
+.about{
+    width: 60%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height:100vh;
+}
+.about p{
+    font-weight: 900;
+    font-size: 5vw;
+    position: relative;
+}
+.about p span{
+    color:blue;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 5vw;
+    content: "";
+    position: relative;
+    overflow: hidden;
+}
+.about p span::before{
+    content: "";
+    animation: mutate 6s linear infinite;
+}
+@keyframes mutate {
+    0%,33%{
+        content: "Student";
+    }
+    34%,66%{
+        content: "Coder";
+    }
+    67%,100%{
+        content: "Freelancer";
+    }
+    
+}
+.about p span::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top:0;
+    width: 100%;
+    background-color: black;
+    height:100%;
+    border-left: 2px solid blue;
+    animation: moveLeft 2s linear infinite;
+}
+@keyframes moveLeft {
+    20%,70%{
+        left:calc(100% + 1vw);
+    }
+    90%,100%{
+        left:0;
+    }
+}
+.animateShow{
+    width: 100%;   
+    min-height: 20vh;
+    overflow: scroll;
+    background-color: #565656;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+}
+.animateShow::-webkit-scrollbar{
+    display: none;
+}
+.InsideAnimate{
+    white-space: nowrap;
+}
+.firstShow{
+    white-space: nowrap;
+    display: inline-block;
+    animation: move 5s linear infinite;
+}
+@keyframes move {
+    from{
+        transform: translateX(0);
+    }
+    to{
+        transform: translateX(-100%);
+    }
+    
+}
+.firstShow h1{
+    /* font-family:fantasy,'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande'; */
+    display: inline-block;
+    font-size: 10vw;
+}
+.circle{
+width:5vw;
+margin: 0 2vw;
+border-radius: 100px;
+height: 5vw;
+display: inline-block;
+background-color: red;
+}
+.workList{
+    width: 100%;
+    min-height: 70vh;
+}
+.swiper{
+  width: 100%;
+  min-height: 70vh;
+}
+.swiper-slide {
+  text-align: center;
+  font-weight: 900;
+  font-family: Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 5vw;
+  width: 100%;
+  min-height: 70vh;
+  background: #000;
+  display: flex;
+  color:#fff;
+  justify-content: center;
+  align-items: center;
+  padding: 1vmin 15vw;
+  box-sizing: border-box;
+}
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  min-height: 70vh;
+  object-fit: cover;
+}
+.workList p{
+    font-size: 5vw;
+    font-weight: 900;
+    /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+    text-decoration: 1px blue wavy underline;
+    text-align: center;
+    padding: 10vh 0;
+}
+.game{
+    width:100%;
+    min-height: 15vh; 
+    padding: 1vh 0;
+    background-color: grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* font-family: Arial, Helvetica, sans-serif; */
+    font-size: 5vw;
+}
+.game a{
+    margin: 0 1vw;
+    color:rgb(255, 0, 0);
+    font-style: bold;
+    font-weight: 900;
+}
+.address{
+    width: 100%;
+    min-height: 50vh;
+    display: flex;
+    justify-content:center;
+    text-align: justify;
+    align-items: center;
+    flex-direction: column;
+    padding: 2vmax;
+    box-sizing: border-box;
+    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+    color: #fff;
+    background-color: #000;
+  }
+  .topAdd{
+    font-size: 2vmax;
+  }
+  .downAdd{
+    font-size: 3vmax;
+    /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+    font-weight: 900;
+    margin-top: 1vh;
+  }
+  footer{
+    width: 100%;
+    min-height: 5vh;
+    box-sizing: border-box;
+    padding: 1.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+
+  }
+  .leftFoot{
+    color:#000;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-size: 1.5vmax;
+  }
+  .rightFoot{
+    width: 50%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    height: 100%;
+  }
+  .fa-brands{
+    color:#000;
+    font-size: 2vw;
+  }
+  .fa-youtube{
+    margin-left: 1vw;
+  }
+  .fa-youtube,.fa-facebook{
+    font-size: 2vmax;
+  }
+  @media(orientation: portrait)
+  {
+    .fa-youtube,.fa-facebook{
+         font-size: 2.3vmax; 
+  }
+  }
+  
+.ham i{
+    color:black;
+    cursor: pointer;
+}
+#close i{
+    color:#fff;
+}
+@keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+  .mobileHam{
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    font-size: 5vh;
+    left: 0;
+    z-index: 9999;
+    background-color: rgb(65, 65, 65);
+    color:#fff;
+    display: none;
+    
+}
+.mobileHam ul{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  
+}
+.mobileHam ul li{
+    margin: 2vh 0;
+}
+#close{
+    position: absolute;
+    top:2vh;
+    right:2vh;
+}
+.mobileHam ul li a{
+    color: transparent;
+    background:linear-gradient(to right,orangered, yellow);
+    -webkit-background-clip: text;
+    text-decoration: none;
+    font-family: fantasy;
+}
+.ham{
+    position: absolute;
+    top:2vh;
+    display: none;
+    right:2vh;
+    color:#000;
+}
+.fa-facebook:hover,.fa-youtube:hover{
+    color: rgb(129, 129, 129);
+}
+
+@media (max-width:600px) {
+    .header{
+        display: none;
+    }
+    .ham{
+        display: block;
+        cursor: pointer;
+    }
+}
+    </style> 
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="ham"><i class="fa-solid fa-bars"></i></div>
+            <div class="header">
+                <ul>
+                    <li><a href="#"><img id="logo" src="logo.jpg" alt="logo"></a></li>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#project">Project</a></li>
+                    <li><a href="#address">Address</a></li>
+                </ul>
+            </div>
+            <div class="mobileHam">
+                <ul>
+                    <li id="close"><i class="fa-solid fa-xmark"></i></li>
+                    <li><a class="insideHam" href="#">Home</a></li>
+                    <li><a class="insideHam" href="#project">Project</a></li>
+                    <li><a class="insideHam" href="#address">Address</a></li>
+                </ul>
+            </div>
+        </header>
+        <main>
+            <div class="main">
+                <div class="takePlace"></div>
+                <div class="aboutPar">
+                    <div class="about">
+                        <p>I'm <span></span></p>
+                    </div>
+                </div>
+                <div class="move">
+                    <div class="part1"></div>
+                    <div class="part2"></div>
+                    <div class="part3"></div>
+                </div>
+            </div>
+
+            <div class="animateShow">
+                <div class="InsideAnimate">
+                    <div class="firstShow">
+                        <h1>Welcome</h1>
+                        <div class="circle"></div>
+                        <h1>To</h1>
+                        <div class="circle"></div>
+                        <h1>All</h1>
+                        <div class="circle"></div>
+                    </div>
+                    <div class="firstShow">
+                        <h1>Welcome</h1>
+                        <div class="circle"></div>
+                        <h1>To</h1>
+                        <div class="circle"></div>
+                        <h1>All</h1>
+                        <div class="circle"></div>
+                    </div>
+                    <div class="firstShow">
+                        <h1>Welcome</h1>
+                        <div class="circle"></div>
+                        <h1>To</h1>
+                        <div class="circle"></div>
+                        <h1>All</h1>
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="workList" id="project">
+                <p>Upcoming Projects</p>
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">I am working to create a platform where users can post updates, follow
+                            each other, like and comment on posts, and receive notifications.</div>
+                        <div class="swiper-slide"> I am working to build a messaging app that supports real-time
+                            communication, notifications, group chats, and multimedia sharing.</div>
+                        <div class="swiper-slide">Be sure to update everyTime.</div>
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+                <div class="game">
+                    <a href="gamesList.html">Play Games </a>
+                </div>
+                <div class="address" id="address">
+                    <div class="topAdd">Thank you for your interest in reaching out. While we currently do not have a
+                        feedback system or database to manage responses, we want to ensure you have the information you
+                        need. If you wish to visit us or send any correspondence, please find our address below:
+                    </div>
+                    <div class="downAdd">Devchuli-13, Daldale, Nawalpur, Nepal</div>
+                </div>
+
+        </main>
+        <footer>
+            <div class="leftFoot">Copyright © 2024 @ Miraj Gautam</div>
+            <div class="rightFoot">
+                <a href="https://www.facebook.com/profile.php?id=100087481301789" target="_blank"><i
+                        class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.youtube.com/@Fosocrif_Official" target="_blank"><i
+                        class="fa-brands fa-youtube"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="
+    https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js
+    "></script>
+    <script>
+let close = document.querySelector("#close");
+let mobileHam = document.querySelector(".mobileHam");
+let insideHams = document.querySelectorAll(".insideHam");
+let ham = document.querySelector(".ham");
+
+
+
+var swiper = new Swiper(".mySwiper", {
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+  },
+});
+
+insideHams.forEach((insideHam) => {
+  insideHam.addEventListener("click", () => {
+    mobileHam.style.display = "none";
+    ham.style.display = "block";
+    let bodyWidth = parseInt(
+      getComputedStyle(document.body).getPropertyValue("width")
+    );
+    if (bodyWidth > 600) {
+      ham.style.display = "none";
+    }
+  });
+});
+close.addEventListener("click", () => {
+  mobileHam.style.display = "none";
+  ham.style.display = "block";
+});
+ham.addEventListener("click", () => {
+  ham.style.display = "none";
+  mobileHam.style.display = "block";
+}); 
+    </script>
+</body>
+
+</html>
